@@ -46,8 +46,8 @@ class ViewController: NSViewController {
         projectSelection.delegate = self
         projectSelection.listFolders()
 
-        tableView.tableColumns[0].sortDescriptorPrototype = NSSortDescriptor(key: CompileMeasure.Order.time.rawValue, ascending: true)
-        tableView.tableColumns[1].sortDescriptorPrototype = NSSortDescriptor(key: CompileMeasure.Order.filename.rawValue, ascending: true)
+        tableView.tableColumns[1].sortDescriptorPrototype = NSSortDescriptor(key: CompileMeasure.Order.time.rawValue, ascending: true)
+        tableView.tableColumns[2].sortDescriptorPrototype = NSSortDescriptor(key: CompileMeasure.Order.filename.rawValue, ascending: true)
 
         NotificationCenter.default.addObserver(self, selector: #selector(windowWillClose(notification:)), name: NSWindow.willCloseNotification, object: nil)
     }
@@ -292,7 +292,12 @@ extension ViewController: NSTableViewDelegate {
         guard let item = dataSource.measure(index: row) else { return nil }
 
         let result = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "Cell\(columnIndex)"), owner: self) as? NSTableCellView
-        result?.textField?.stringValue = item[columnIndex]
+        if columnIndex == 0{
+            result?.textField?.stringValue = "\(row)"
+        }else{
+            result?.textField?.stringValue = item[columnIndex - 1]
+        }
+        
         
         return result
     }
